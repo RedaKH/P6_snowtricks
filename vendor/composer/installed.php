@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ca577f89524ec92681cece2c02cc342bed8b771d',
+        'reference' => '93a5aa74b7e63d276217b6c415f4a7329ad8c2b3',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ca577f89524ec92681cece2c02cc342bed8b771d',
+            'reference' => '93a5aa74b7e63d276217b6c415f4a7329ad8c2b3',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -103,6 +103,15 @@
                 0 => '1.0|2.0',
             ),
         ),
+        'symfony/asset' => array(
+            'pretty_version' => 'v5.4.7',
+            'version' => '5.4.7.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/asset',
+            'aliases' => array(),
+            'reference' => '4affdca3da5f380caa27a338269b36ac288b3981',
+            'dev_requirement' => false,
+        ),
         'symfony/cache' => array(
             'pretty_version' => 'v5.4.7',
             'version' => '5.4.7.0',
@@ -161,7 +170,7 @@
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(),
             'reference' => 'e8b495ea28c1d97b5e0c121748d6f9b53d075c66',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/error-handler' => array(
             'pretty_version' => 'v5.4.7',
@@ -302,7 +311,7 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
             'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/polyfill-php81' => array(
             'pretty_version' => 'v1.25.0',
