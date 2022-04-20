@@ -1,51 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Page d'accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-      <nav class="navbar sticky-top navbar-expand-lg navbar-dark maNav">
-        <a class="navbar-brand" href="#">
-          <img src="logo.png" width="50">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav ml-auto">
-          <a class="nav-item nav-link" href="#">Accueil</a>
-          <a class="nav-item nav-link" href="#asso">Association</a>
-          <a class="nav-item nav-link navLink" href="#fest">Festival</a>
-          <a href="#film" class="nav-item nav-link navLink">Films</a>
-          <a href="#resa" class="nav-item nav-link navLink">Réservations</a>
-
-          <a class="nav-item nav-link" href="#infos">Informations</a>
-          </div>
-        </div>
-      </nav>
-      <div class="landing">
-        <div class="home-wrap">
-            <div class="home-inner" id="fond_accueil"></div>
-        </div>
-    </div>
-    <div class="intro_text">
-      <div class="text-center">
-          <h1 class="lead_text">Bienvenue au festival du film en plein air</h1>
-          <br>
-          <h5 class="lead5_text">Vous y retrouverez l'ensemble des informations concernant</h5>
-          <h5 class="lead5_text">le festival et notre association</h5>
-      </div>
+<div class="w-100 h-100">
+        <div class="home-bg">          
+            <div class="container">
+                <span class="slogan"><p class="slogan-p">Be a pro of snowboard</p></span>              
+            </div>
+            <a href="#tricks"><i class="fas fa-chevron-down fa-4x chevron-down"></i></a>                                         
+        </div>           
     </div>
 
+  
 
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
+<section class="section section-b">
+    <div class="container">
+    <div class="card-deck">
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </section>
 
+  <div class="container-fluid down">
+        <a href="#tricks">
+            <i class="fas fa-chevron-up fa-4x chevron-up"></i>
+        </a>
+    </div>
 {% endblock %}

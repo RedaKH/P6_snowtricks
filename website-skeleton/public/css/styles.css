@@ -1,0 +1,30 @@
+.home-bg {
+    background-image: url(https://voyage-onirique.com/wp-content/uploads/2020/01/63739.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    height: 100vh;
+}
+.slogan {
+    height: 100vh;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+}
+.down{
+    position: relative;
+
+}
+
+.chevron-down {
+    position: absolute;
+    right: 0.5%;
+    bottom: 0%;
+}
