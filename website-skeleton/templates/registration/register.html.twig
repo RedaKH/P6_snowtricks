@@ -11,10 +11,12 @@
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.name) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_row(registrationForm.confirm_password) }}
+
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}

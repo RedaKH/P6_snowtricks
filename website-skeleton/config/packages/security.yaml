@@ -8,6 +8,7 @@ security:
 
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users_in_memory: { memory: null }
@@ -20,6 +21,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
 
 
     firewalls:
@@ -29,9 +31,11 @@ security:
         main:
             lazy: true
             provider: users_in_memory
-            form_login:
-                login_path: login
-                check_path: login
+            custom_authenticator: App\Security\AuthFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                target: home
 
 
             # activate different ways to authenticate
@@ -43,8 +47,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+           - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+           - { path: ^/admin, roles: ROLE_ADMIN }
+           - { path: ^/profile, roles: ROLE_USER }
+           - { path: ^(?!/(login|register|reset-password)), roles: ROLE_USER }
 
 when@test:
     security:
