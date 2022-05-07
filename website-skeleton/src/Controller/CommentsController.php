@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class CommentsController extends AbstractController
 {
     /**
-     * @Route("/", name="")
+     * @Route("/comments", name="app_comments")
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+        return $this->render('comments/index.html.twig', [
+            'controller_name' => 'CommentsController',
         ]);
     }
 }

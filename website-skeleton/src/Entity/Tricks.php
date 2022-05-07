@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TricksRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,10 +20,7 @@ class Tricks
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+  
 
     /**
      * @ORM\Column(type="text")
@@ -35,13 +33,55 @@ class Tricks
     private $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Tricks", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Tricks", orphanRemoval=true, cascade={"persist"})
      */
     private $images;
+
+   
+
+ 
+
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="Tricks", orphanRemoval=true,cascade={"persist"})
+     */
+    private $videos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="Tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $FeatImg;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+
+
+ 
+    
+
+    
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,17 +89,7 @@ class Tricks
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+  
 
     public function getContent(): ?string
     {
@@ -114,4 +144,103 @@ class Tricks
 
         return $this;
     }
+
+    public function getSlug(): ?string
+    {
+        return (new Slugify())->slugify($this->title);
+    }
+
+    
+
+
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setTricks($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getTricks() === $this) {
+                $video->setTricks(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+   
+
+   
+
+
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getFeatImg(): ?string
+    {
+        return $this->FeatImg;
+    }
+
+    public function setFeatImg(string $FeatImg): self
+    {
+        $this->FeatImg = $FeatImg;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+ 
+
+  
+
+    
 }

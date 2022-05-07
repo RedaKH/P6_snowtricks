@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '93a5aa74b7e63d276217b6c415f4a7329ad8c2b3',
+        'reference' => 'daabf265b7d5976a015ca4441cfc874f38ebb06a',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '93a5aa74b7e63d276217b6c415f4a7329ad8c2b3',
+            'reference' => 'daabf265b7d5976a015ca4441cfc874f38ebb06a',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -251,12 +251,12 @@
             'dev_requirement' => true,
         ),
         'symfony/maker-bundle' => array(
-            'pretty_version' => 'v1.38.0',
-            'version' => '1.38.0.0',
+            'pretty_version' => 'v1.41.0',
+            'version' => '1.41.0.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/maker-bundle',
             'aliases' => array(),
-            'reference' => '143024ab0e426285d3d9b7f6a3ce51e12a9d8ec5',
+            'reference' => '4b994dfdd0196dcb3d333fdd6a1d72d5955a9532',
             'dev_requirement' => true,
         ),
         'symfony/polyfill-ctype' => array(

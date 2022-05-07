@@ -17,10 +17,7 @@ class Image
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Tricks::class, inversedBy="images")
@@ -28,9 +25,32 @@ class Image
      */
     private $Tricks;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+  
+
+
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+  
+
+    public function getTricks(): ?Tricks
+    {
+        return $this->Tricks;
+    }
+
+    public function setTricks(?Tricks $Tricks): self
+    {
+        $this->Tricks = $Tricks;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -45,15 +65,6 @@ class Image
         return $this;
     }
 
-    public function getTricks(): ?Tricks
-    {
-        return $this->Tricks;
-    }
+    
 
-    public function setTricks(?Tricks $Tricks): self
-    {
-        $this->Tricks = $Tricks;
-
-        return $this;
-    }
 }

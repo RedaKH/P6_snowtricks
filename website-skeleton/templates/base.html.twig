@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
@@ -29,6 +31,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="">Tricks</a>
 						</li>
+						{% if not app.user %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_register') }} ">S'inscrire</a>
 						</li>
@@ -36,6 +39,25 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
 						</li>
+						
+						{% endif %}
+						
+						
+						{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('make_trick') }}">Créer votre Tricks</a>
+						</li>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="{{app.user.avatar}}" width="40" height="40" class="rounded-circle">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{{ path('update_profile') }}">Mettre à jour son profil</a>
+          <a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+						
+						{% endif %}
+						
                         
                         
                       
@@ -50,8 +72,7 @@
 			class="bg-light text-center text-lg-start">
 			<!-- Copyright -->
 			<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-				© 2020 Copyright:
-				<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+				© 2022 snowtricks
 			</div>
 			<!-- Copyright -->
 		</footer>

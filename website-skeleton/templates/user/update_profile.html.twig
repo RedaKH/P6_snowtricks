@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+{% for msg in app.flashes %}
+<div class="alert alert-primary" role="alert">
+  {{msg}}
+</div>
+
+{% endfor %}
+
+<div class="container">
+<h1 class="mt-4">Modifier votre profil</h1>
+
+{{form(form)}}
+
+</div>
+
+{% endblock %}
