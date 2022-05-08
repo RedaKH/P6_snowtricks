@@ -24,9 +24,9 @@ class UserController extends AbstractController
     /**
      * @Route("dashboard/update_profile", name="update_profile")
      */
-    public function updateProfile(Request $request): Response
+    public function updateProfile(Request $request)
     {
-        $user = new User();
+        $user = $this->getUser();
         $form = $this->createForm(editUserType::class,$user);
 
         $form->handleRequest($request);
@@ -53,7 +53,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        return $this->render('user/update_profile.html.twig',['user'=>$user,'form'=>$form->createView()]);
+        return $this->render('user/update_profile.html.twig',['form'=>$form->createView()]);
 }
 
 /**

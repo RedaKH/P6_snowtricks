@@ -38,12 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\EqualTo(propertyPath="confirm_password",message="Vous n'avez pas tapé le même mot de passe")
+     * 
      */
     private $password;
   
-
-    public $confirm_password;
 
 
 
@@ -63,9 +61,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $Avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tricks::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Tricks::class, mappedBy="user", orphanRemoval=true,cascade={"persist"})
      */
     private $tricks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="User")
+     */
+    private $comments;
 
   
 
@@ -74,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
    
@@ -227,6 +231,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($trick->getUser() === $this) {
                 $trick->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

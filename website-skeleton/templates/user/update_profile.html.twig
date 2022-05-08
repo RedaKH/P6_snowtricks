@@ -3,7 +3,7 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-{% for msg in app.flashes %}
+{% for msg in app.flashes('msg') %}
 <div class="alert alert-primary" role="alert">
   {{msg}}
 </div>

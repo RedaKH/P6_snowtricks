@@ -15,8 +15,8 @@ class editUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email',TextType::class)
-            ->add('name',TextType::class)
+            ->add('email')
+            ->add('name')
             ->add('avatar',FileType::class,[
                 'label'=> 'Avatar',
                 'multiple'=>false,
@@ -24,11 +24,10 @@ class editUserType extends AbstractType
                 'required'=>false,
                 
             ])
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
-            ]);
+            ->add('Valider', SubmitType::class);
+
             
-        ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

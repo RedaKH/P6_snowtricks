@@ -3,6 +3,12 @@
 {% block title %}Hello TricksController!{% endblock %}
 
 {% block body %}
+{% for msg in app.flashes('success') %}
+<div class="alert alert-primary" role="alert">
+  {{msg}}
+</div>
+{% endfor %}
+
 {{ include('tricks/maketrick.html.twig') }}
 
 {% endblock %}

@@ -35,8 +35,8 @@ class TricksController extends AbstractController
 
     public function makeTrick(Request $request): Response
     {
-        $tricks = new Tricks();
         $user = new User();
+        $tricks = new Tricks();
         $form = $this->createForm(AddTrickType::class, $tricks);
         $form->handleRequest($request);
 
@@ -76,7 +76,7 @@ class TricksController extends AbstractController
             }
 
             $tricks->setCreatedAt(new \DateTimeImmutable());
-            $user->addTrick($tricks);
+            $tricks->setUser($this->getUser());
             $this->em->persist($tricks);
             $this->em->flush();
             $this->addFlash('success', 'Votre tricks a bien été envoyé');
@@ -92,7 +92,7 @@ class TricksController extends AbstractController
    
 
     /**
-     * @Route("update_trick/{id}", name="update_trick")
+     * @Route("dashboard/update/{id}", name="update_trick")
      */
     public function update(Tricks $tricks, Request $request): Response
     {
@@ -138,6 +138,7 @@ class TricksController extends AbstractController
             }
 
             $tricks->setCreatedAt(new \DateTimeImmutable());
+            $tricks->setUser($this->getUser());
             $this->em->persist($tricks);
             $this->em->flush();
             $this->addFlash('success', 'Votre tricks a bien été modifié');
@@ -151,7 +152,7 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("Route", name="RouteName")
+     * @Route("delete/{id}", name="RouteName")
      */
     public function delete($id): Response
     {

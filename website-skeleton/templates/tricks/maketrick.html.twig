@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% for msg in app.flashes('success') %}
+<div class="alert alert-primary" role="alert">
+  {{msg}}
+</div>
+{% endfor %}
 	{{ form_start(form) }}
 	{{ form_widget(form._token) }}
 
