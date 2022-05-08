@@ -44,6 +44,27 @@ class CommentsRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+     public function getPage($page,$limit)
+    {
+        $query = $this->createQueryBuilder('c')
+                 ->where('c.comment')
+                 ->orderBy('c.created_at')
+                 ->setFirstResult(($page*$limit) - $limit)
+                 ->setMaxResults($limit);
+
+                 return $query->getQuery()->getResult();
+        # code...
+    }
+
+    public function getTotalComments(){
+        $query = $this->createQueryBuilder('c')
+               ->select('count(c)')
+               ->where('comment');
+       
+
+        return $query->getQuery()->getSingleScalarResult();
+
+    }
 
     // /**
     //  * @return Comments[] Returns an array of Comments objects
