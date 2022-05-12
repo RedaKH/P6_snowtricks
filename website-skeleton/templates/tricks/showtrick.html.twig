@@ -1,44 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TricksController!{% endblock %}
+{% block title %}Hello TricksController!
+{% endblock %}
 
 {% block body %}
 
+    <div class="container">
 
-<img src="{{ asset('/uploads/'~tricks.featimg)}}" alt="" width="250">
+	<div class="card mb-5">
+		<img class="card-img-top" src="{{ asset('/uploads/'~tricks.featimg)}}" alt="Card image cap">
+		<div class="card-body">
+			<h5 class="card-title">{{tricks.title}}</h5>
+			<p class="card-text">
+				<small class="text-muted">{{tricks.user.name}}</small>
+			</p>
+			<p class="card-text">
+				{% for image in tricks.images %}
+					<img src="{{ asset('/uploads/'~image.name) }}" alt="" width="250">
 
-{% for image in tricks.images %}
-			<div>
-				<img src="{{ asset('/uploads/'~image.name) }}" alt="" width="250">
-				
 
 				</br>
-                {% endfor %}
-<h1> Titre </h1>
-{{tricks.title}} 
-<h2> Contenu </h2>
-{{tricks.content}} 
-{{category.name}} 
+			{% endfor %}
 
- {% for video in tricks.videos %}
-                    <div class="col-lg-4 col-md-12 mb-3 pb-3">
-                        <div class="card h-100">
-                            <iframe
-                                    src="{{ video.url }}"
-                                    title="YouTube video player"
-                                    frameborder="0"
-                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen>
-
-                            </iframe>
-                        </div>
-                    </div>
-                {% endfor %}
-
-                {{ include('comments/comments.html.twig') }}
+		</p>
+		<p class="card-text">
 
 
+			{{tricks.content}}
+			<br/>
+
+			{% for video in tricks.videos %}
+				<div class="col-lg-4 col-md-12 mb-3 pb-3">
+					<div class="card h-100">
+						<iframe src="{{ video.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+				</div>
+			{% endfor %}
+
+			<small class="text-muted">{{tricks.category.name}}
+			</small>
+		</p>
+	</div>
+</div>
+	</div>
 
 
+
+{% include 'comments/comments.html.twig' %}
 
 {% endblock %}

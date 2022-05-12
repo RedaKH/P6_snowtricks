@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CommentsRepository;
 
 class TricksController extends AbstractController
 {
@@ -75,7 +76,7 @@ class TricksController extends AbstractController
 
             }
 
-            $tricks->setCreatedAt(new \DateTimeImmutable());
+            $tricks->setCreatedAt(new \DateTime());
             $tricks->setUser($this->getUser());
             $this->em->persist($tricks);
             $this->em->flush();
@@ -92,7 +93,7 @@ class TricksController extends AbstractController
    
 
     /**
-     * @Route("dashboard/update/{id}", name="update_trick")
+     * @Route("dashboard/update/{id}", name="update_trick",methods={"GET","POST"})
      */
     public function update(Tricks $tricks, Request $request): Response
     {
@@ -137,7 +138,7 @@ class TricksController extends AbstractController
                 $tricks->addImage($img);
             }
 
-            $tricks->setCreatedAt(new \DateTimeImmutable());
+            $tricks->setCreatedAt(new \DateTime());
             $tricks->setUser($this->getUser());
             $this->em->persist($tricks);
             $this->em->flush();
@@ -207,4 +208,6 @@ class TricksController extends AbstractController
             'category'=>$category
         ]);
     }
+
+ 
 }

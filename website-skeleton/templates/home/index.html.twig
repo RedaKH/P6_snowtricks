@@ -18,44 +18,63 @@
     
 <section class="section section-b">
     <div class="container">
-    <div class="card-deck">
-  <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-    </div>
-  </div>
-  <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-    </div>
-  </div>
-  <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-    </div>
+    {% for trick in tricks %}
+    <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{ asset('/uploads/'~tricks.featimg)}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{ trick.title}}</h5>
+    <p class="card-text">{{trick.category}}</p>
+    <a href="path('show_trick')" class="btn btn-primary">En savoir plus</a>
+    {% if app.user %}
+        <a href="path('update_trick')" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></i></a>
+        <a href="path('delete_trick')" class="btn btn-primary"><i class="fa-solid fa-square-xmark"></i></a>
+
+    
+    {% endif %}
+    
   </div>
 </div>
+        
+    {% endfor %}
+
+
+    <ul class="pagination">
+        <li class="{{ (page == 1) ? 'disabled' : '' }}">
+            <a href="?page=1">
+                <i class="fas fa-step-backward"></i>
+            </a>
+        </li>    
+        <li class="{{ (page == 1) ? 'disabled' : '' }}">
+            <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </li>
+        {% set pages = (total / limit)|round(0, 'ceil') %}
+        {% for item in 1..pages %}
+            <li class="{{ (page == item) ? 'active' : '' }}">
+                <a href="?page={{ item }}">{{ item }}</a>
+            </li>
+        {% endfor %}
+        <li class="{{ (page == pages) ? 'disabled' : '' }}">
+            <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
+                <i class="fas fa-angle-right"></i>
+            </a>
+        </li>
+        <li class="{{ (page == pages) ? 'disabled' : '' }}">
+            <a href="?page={{ pages }}">
+                <i class="fas fa-step-forward"></i>
+            </a>
+        </li>
+
+    </ul>
+
+  
       
     </div>
   </section>
 
   <div class="container-fluid down">
-        <a href="#tricks">
+        <a href="">
             <i class="fas fa-chevron-up fa-4x chevron-up"></i>
         </a>
     </div>
