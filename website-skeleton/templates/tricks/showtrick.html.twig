@@ -45,7 +45,101 @@
 	</div>
 
 
+{% if app.user %}
+<div class="container">
 
-{% include 'comments/comments.html.twig' %}
+	<div class="form-group">
+		<label for="exampleFormControlTextarea1">Commentaire :</label>
+		{{ form(commentForm) }}
+	   
+
+
+
+
+
+	</div>
+	{% else %}
+	<div class="container">
+	<p> Vous devez être <a href="{{ path('app_login') }}">connecté</a> ou bien  <a href="{{ path('app_register') }}"> inscrit<a/></p>
+	</div>
+		
+
+{% endif %}
+
+
+
+<div class="container">
+
+
+	
+
+	{% for comment in comments %}
+		<div class="container">
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-2">
+								<img src="{{ asset('/uploads/' ~ comment.user.avatar) }}" class="img img-rounded img-fluid">
+
+
+								<p class="text-secondary text-center m-0">{{ comment.user.name }}</p>
+
+								<p class="text-secondary text-center m-0">{{ comment.CreatedAt|date("${m/d/Y}") }}</p>
+							</div>
+							<div class="col-md-10">
+								<div class="clearfix"></div>
+								<p>{{ comment.comment }}</p>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+
+       
+ 
+
+<div class="container">
+
+
+<ul class="pagination">
+        <li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+            <a class="page-link" href="?page=1">
+                <i class="fas fa-step-backward"></i>
+            </a>
+        </li>    
+        <li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </li>
+        {% set pages = (total / limit)|round(0, 'ceil') %}
+        {% for item in 1..pages %}
+            <li class="page-item {{ (page == item) ? 'active' : '' }}">
+                <a class="page-link" href="?page={{ item }}">{{ item }}</a>
+            </li>
+        {% endfor %}
+        <li class="page-item {{ (page == pages) ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
+                <i class="fas fa-angle-right"></i>
+            </a>
+        </li>
+        <li class="page-item {{ (page == pages) ? 'disabled' : '' }}">
+            <a class="page-link" href="?page={{ pages }}">
+                <i class="fas fa-step-forward"></i>
+            </a>
+        </li>
+
+    </ul>
+	</div>
+
 
 {% endblock %}

@@ -45,20 +45,24 @@ class CommentsRepository extends ServiceEntityRepository
         }
     }
     
-    public function getPaginatedComments($page, $limit)
+    public function getPaginatedComments($page, $limit,$tricks)
     {
-        $query = $this->createQueryBuilder('t')
-        ->where('t.comments')
-        ->orderBy('t.createdAt')
+        $query = $this->createQueryBuilder('c')
+        ->where('c.tricks = :tricks')
+        ->setParameter('tricks', $tricks)
+        ->orderBy('c.created_at')
         ->setFirstResult(($page * $limit) - $limit)
         ->setMaxResults($limit);
 
     return $query->getQuery()->getResult();
     }
 
-    public function getTotalComments(){
+    public function getTotalComments($tricks){
         $query = $this->createQueryBuilder('c')
-            ->select('COUNT(c)');
+            ->select('COUNT(c)')
+            ->where('c.tricks = :tricks')
+        ->setParameter('tricks', $tricks)
+            ;
 
         return $query->getQuery()->getSingleScalarResult();
     }

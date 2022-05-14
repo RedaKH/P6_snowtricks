@@ -6,10 +6,13 @@ use App\Entity\Category;
 use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Entity\User;
+use App\Entity\Comments;
 use App\Form\AddTrickType;
+use App\Form\CommentType;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -193,7 +196,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks/{id}", name="show_trick",requirements={"id"="\d+"})
      */
-    public function showTrick(TricksRepository $tricksrepo,$id): Response
+    public function showTrick(TricksRepository $tricksrepo,$id , CommentsRepository $repo,Request $request,EntityManagerInterface $em, UserRepository $userepo): Response
     {
         $tricks = $tricksrepo->find($id);
         $category = new Category();
@@ -201,13 +204,48 @@ class TricksController extends AbstractController
             throw new NotFoundHttpException();
 
         }
+        $comments = new Comments;
+        $commentForm = $this->createForm(CommentType::class,$comments);
+        $commentForm->handleRequest($request);
+     
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid() ) {
+            $comments->setCreatedAt(new \DateTime());
+            $comments->setTricks($tricks);
+            $comments->setUser($this->getUser());
+            $this->em->persist($comments);
+            $this->em->flush();
+            $this->addFlash('msg','votre commentaire a bien été posté');
+        }
+
+
+
+        $limit = 5;
+        $page = $request->query->getInt('page', 1);
+
+        $comments = $repo->getPaginatedComments($page,$limit,$tricks);
+
+        $total = $repo->getTotalComments($tricks);
 
 
         return $this->render('tricks/showtrick.html.twig', [
             'tricks'=>$tricks,
-            'category'=>$category
+            'category'=>$category,
+            'page'=>$page,
+            'total'=>$total,
+            'limit'=>$limit,
+            'comments'=>$comments,
+            'commentForm'=>$commentForm->createView()
         ]);
     }
+
+
+
+ 
+
+    
+
+    
 
  
 }
