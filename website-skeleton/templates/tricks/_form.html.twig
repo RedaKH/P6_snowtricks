@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% for msg in app.flashes('success') %}
-<div class="alert alert-primary" role="alert">
-  {{msg}}
-</div>
-{% endfor %}
+
 	{{ form_start(form) }}
 	{{ form_widget(form._token) }}
 
@@ -14,7 +10,6 @@
 	{{ form_row(form.featimg)}}
 	{{ form_row(form.name)}}
 	 {# Si la route est "update_ on affiche les images #}
-{% if app.request.attributes.get('_route') == 'update_trick' %}
 	<h1>Images</h1>
 
 	{% for image in tricks.images %}
@@ -28,7 +23,17 @@
 				<a href="{{ path('tricks_delete_image', {id: image.id})}}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
 			</div>
 		{% endfor %}
-	{% endif %}
+<h1>Liste des urls </h1>
+
+{% for video in tricks.videos %}
+
+						<iframe src="{{ video.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<a href="{{ path('remove_video', {id: video.id})}}" data-delete data-token="{{ csrf_token('delete' ~ video.id )}}">Supprimer</a>
+
+<br/>
+    
+{% endfor %}
+
 
 
 

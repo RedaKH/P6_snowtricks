@@ -6,7 +6,7 @@ window.onload = () => {
         link.addEventListener("click", function(e){
             e.preventDefault()
 
-            if(confirm("Voulez-vous supprimer cette image ?")){
+            if(confirm("Voulez-vous supprimer ce média ?")){
                 fetch(this.getAttribute("href"), {
                     method: "DELETE",
                     headers: {
@@ -26,7 +26,11 @@ window.onload = () => {
             }
         })
     }
+    
 }
+
+
+
 const newItem = (e) => {
     const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
   
@@ -55,14 +59,4 @@ const newItem = (e) => {
     .querySelectorAll('.btn-new')
     .forEach(btn => btn.addEventListener("click", newItem));
 
-    $(document).ready(function(){
-        $(".content").slice(0, 4).show();
-        $("#loadMore").on("click", function(e){
-          e.preventDefault();
-          $(".content:hidden").slice(0, 4).slideDown();
-          if($(".content:hidden").length == 0) {
-            $("#loadMore").text("No Content").addClass("noContent");
-          }
-        });
-        
-      })
+    

@@ -44,23 +44,16 @@ class TricksRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-    public function getPaginatedTricks($page, $limit)
+    public function pagination($limit,$page)
     {
+        $offset = ($page * $limit) - $limit;
+
         $query = $this->createQueryBuilder('t')
-            ->orderBy('t.created_at', 'DESC')
-            ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit);
-           
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery();
 
-
-        return $query->getQuery()->getResult();
-    }
-
-    public function getTotalTricks(){
-        $query = $this->createQueryBuilder('t')
-               ->select('COUNT(t)');
-
-        return $query->getQuery()->getScalarResult();       
+        return $query->execute();
     }
 
     // /**

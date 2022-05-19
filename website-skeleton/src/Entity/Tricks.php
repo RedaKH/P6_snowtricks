@@ -171,7 +171,7 @@ class Tricks
     public function addVideo(Video $video): self
     {
         if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
+            $this->videos->add($video);
             $video->setTricks($this);
         }
 

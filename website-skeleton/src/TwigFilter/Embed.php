@@ -11,7 +11,7 @@ class Embed extends AbstractExtension{
     public function getFilters()
     {
         return [
-            'my_youtube_embed_url' => new TwigFilter('my_youtube_embed_url', [$this, 'myYoutubeEmbedUrl'],['is_safe'=>'html'])
+            new TwigFilter('myYoutubeEmbedUrl', [$this, 'myYoutubeEmbedUrl'])
         ];
     }
 

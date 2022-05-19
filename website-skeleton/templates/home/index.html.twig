@@ -18,16 +18,20 @@
     
 <section class="section section-b">
     <div class="container">
-    {% for trick in tricks %}
+    {% for msg in app.flashes('success') %}
+<div class="alert alert-primary" role="alert">
+  {{msg}}
+</div>
+{% endfor %}
+    {% for tricks in tricks %}
     <div class="card" style="width: 18rem;">
   <img class="card-img-top" src="{{ asset('/uploads/'~tricks.featimg)}}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{ trick.title}}</h5>
-    <p class="card-text">{{trick.category}}</p>
-    <a href="path('show_trick')" class="btn btn-primary">En savoir plus</a>
+    <h5 class="card-title">{{ tricks.title}}</h5>
+    <p class="card-text">{{tricks.category.name}}</p>
+    <a href="{{ path('show_trick', { 'id': tricks.id }) }}" class="btn btn-primary">En savoir plus</a>
     {% if app.user %}
-        <a href="path('update_trick')" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></i></a>
-        <a href="path('delete_trick')" class="btn btn-primary"><i class="fa-solid fa-square-xmark"></i></a>
+        <a href="{{ path('update_trick', { 'id': tricks.id }) }}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
 
     
     {% endif %}
@@ -38,36 +42,50 @@
     {% endfor %}
 
 
-    <ul class="pagination">
-        <li class="{{ (page == 1) ? 'disabled' : '' }}">
-            <a href="?page=1">
-                <i class="fas fa-step-backward"></i>
-            </a>
-        </li>    
-        <li class="{{ (page == 1) ? 'disabled' : '' }}">
-            <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
-                <i class="fas fa-angle-left"></i>
-            </a>
-        </li>
-        {% set pages = (total / limit)|round(0, 'ceil') %}
-        {% for item in 1..pages %}
-            <li class="{{ (page == item) ? 'active' : '' }}">
-                <a href="?page={{ item }}">{{ item }}</a>
-            </li>
-        {% endfor %}
-        <li class="{{ (page == pages) ? 'disabled' : '' }}">
-            <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
-                <i class="fas fa-angle-right"></i>
-            </a>
-        </li>
-        <li class="{{ (page == pages) ? 'disabled' : '' }}">
-            <a href="?page={{ pages }}">
-                <i class="fas fa-step-forward"></i>
-            </a>
-        </li>
+   <div class="container">
 
-    </ul>
 
+{# Pagination #}
+ {% if pagination > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page - 1 }}">Previous</a>
+                </li>
+            {% endif %}
+            {% if page < 3 %}
+                {% if pagination > 5 %}
+                    {% set pagination = 5 %}
+                {% endif %}
+                {% for i in 1..pagination %}
+                    <li class="page-item {% if i == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+            {% elseif pagination-page < 2 %}
+                {% for i in pagination-4..pagination %}
+                    <li class="page-item {% if i == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                {% for i in page-2..page+2 %}
+                    <li class="page-item {% if i == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {% if pagination > 1 and pagination != page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page + 1 }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+	</div>
+    
   
       
     </div>
