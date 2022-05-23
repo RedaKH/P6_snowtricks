@@ -241,7 +241,7 @@ class TricksController extends AbstractController
      */
     public function deleteTricks(Tricks $tricks)
     {
-        
+
         $imgs = $tricks->getImages();
 
         if ($imgs) {
