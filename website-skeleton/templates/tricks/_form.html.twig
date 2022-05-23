@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<div class="container">
 	{{ form_start(form) }}
 	{{ form_widget(form._token) }}
 
@@ -60,8 +60,10 @@
 	{{ form_row(form.Category)}}
 
 
-	<button class="btn">{{ button_label|default('Save') }}</button>
+	<button class="btn btn-primary">{{ button_label|default('Update') }}</button>
 	{{ form_end(form,{render_rest:false}) }}
+	</div>
+
 	{% block javascripts %}
 		<script src="{{ asset('js/script.js') }}"></script>
 		<script></script>

@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentsRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class TricksController extends AbstractController
 {
@@ -42,7 +43,7 @@ class TricksController extends AbstractController
     public function index(Request $request, TricksRepository $tricksrepo): Response
     {
         $page = $request->query->getInt('page', 1);
-        $limit=10;
+        $limit = 10;
         $alltricks = count($tricksrepo->findAll());
         $pagination = ceil($alltricks / $limit);
         $pagination = ($pagination == 0) ? 1 : $pagination;
@@ -122,7 +123,7 @@ class TricksController extends AbstractController
      * @Route("dashboard/update/{id}", name="update_trick")
      */
 
-    public function update(Tricks $tricks,$id,VideoRepository $video, Request $request): Response
+    public function update(Tricks $tricks, $id, VideoRepository $video, Request $request): Response
     {
 
         $form = $this->createForm(AddTrickType::class, $tricks);
@@ -165,9 +166,9 @@ class TricksController extends AbstractController
                 $tricks->addImage($img);
             }
 
-           
 
-             
+
+
             $tricks->setCreatedAt(new \DateTime());
             $tricks->setUser($this->getUser());
             $this->em->flush();
@@ -178,11 +179,11 @@ class TricksController extends AbstractController
         }
 
         return $this->render('tricks/update.html.twig', ['tricks' => $tricks, 'form' => $form->createView()]);
-    } 
+    }
 
-  
 
-  
+
+
 
 
     /**
@@ -213,39 +214,73 @@ class TricksController extends AbstractController
     /**
      * @Route("/delete/video/{id}", name="remove_video", methods={"DELETE"})
      */
-    public function deleteVideo(Video $video,Request $request)
+    public function deleteVideo(Video $video, Request $request)
     {
         $data = json_decode($request->getContent(), true);
 
         // On vérifie si le token est valide
         if ($this->isCsrfTokenValid('delete' . $video->getId(), $data['_token'])) {
-            
-        $video->getUrl();
+
+            $video->getUrl();
 
             $this->em->remove($video);
             $this->em->flush();
 
-            // On répond en json
+            return $this->redirect('update_trick');
             return new JsonResponse(['success' => 1]);
         } else {
             return new JsonResponse(['error' => 'Token Invalide'], 400);
         }
     }
 
+    /**
+     * @Route("/delete/{id}", name="delete_trick" )
+     * 
+     *
+     * 
+     */
+    public function deleteTricks(Tricks $tricks)
+    {
+        
+        $imgs = $tricks->getImages();
 
-    
+        if ($imgs) {
+
+            foreach ($imgs as $img) {
+
+                $name = $this->getParameter("images_directory") . '/' . $img->getName();
+
+                if (file_exists($name)) {
+                    unlink($name);
+                }
+            }
+        }
+
+        $this->em->remove($tricks);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_home');
+    }
+
+
+
 
 
     /**
-     * @Route("/tricks/{id}", name="show_trick")
+     * @Route("/tricks/{slug}-{id<[0-9]+>}", name="show_trick",methods={"GET","POST"},
+     * requirements={"slug": "[a-z0-9\-]*"})
      */
-    public function showTrick(TricksRepository $tricksrepo, $id, CommentsRepository $repo, Request $request, EntityManagerInterface $em, UserRepository $userepo): Response
+    public function showTrick(TricksRepository $tricksrepo, $id, CommentsRepository $repo, Request $request, string $slug): Response
     {
         $tricks = $tricksrepo->find($id);
         $category = new Category();
-        if (!$tricks) {
-            throw new NotFoundHttpException();
+        if ($tricks->getSlug() !== $slug) {
+            return $this->redirectToRoute('show_trick', [
+                'id' => $tricks->getId(),
+                'slug' => $tricks->getSlug(),
+            ], 301);
         }
+
         $comments = new Comments;
         $commentForm = $this->createForm(CommentType::class, $comments);
         $commentForm->handleRequest($request);

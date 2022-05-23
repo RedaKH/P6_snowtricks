@@ -23,15 +23,20 @@
   {{msg}}
 </div>
 {% endfor %}
+<div class="row">
+
+
     {% for tricks in tricks %}
     <div class="card" style="width: 18rem;">
   <img class="card-img-top" src="{{ asset('/uploads/'~tricks.featimg)}}" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">{{ tricks.title}}</h5>
     <p class="card-text">{{tricks.category.name}}</p>
-    <a href="{{ path('show_trick', { 'id': tricks.id }) }}" class="btn btn-primary">En savoir plus</a>
+    <a href="{{ path('show_trick', { 'id': tricks.id, 'slug': tricks.slug}) }}" class="btn btn-primary">En savoir plus</a>
     {% if app.user %}
-        <a href="{{ path('update_trick', { 'id': tricks.id }) }}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
+        <a href="{{ path('update_trick', { 'id': tricks.id }) }}">Update</a>
+        <a href="{{ path('delete_trick', { 'id': tricks.id }) }}">Delete</a>
+
 
     
     {% endif %}

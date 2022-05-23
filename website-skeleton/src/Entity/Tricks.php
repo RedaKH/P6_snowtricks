@@ -33,7 +33,7 @@ class Tricks
     private $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Tricks", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="Tricks", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $images;
 
@@ -42,7 +42,7 @@ class Tricks
  
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="Tricks", orphanRemoval=true,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="Tricks", orphanRemoval=true,cascade={"persist", "remove"})
      */
     private $videos;
 
@@ -71,7 +71,7 @@ class Tricks
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="tricks",cascade={"persist", "remove"})
      */
     private $comments;
 

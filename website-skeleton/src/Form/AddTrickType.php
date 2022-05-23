@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +23,7 @@ class AddTrickType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('content',TextType::class)
+            ->add('content',TextareaType::class)
             ->add('videos', CollectionType::class,[
                 'entry_type'=>VideoType::class,
                 'by_reference'=>false,

@@ -59,4 +59,12 @@ const newItem = (e) => {
     .querySelectorAll('.btn-new')
     .forEach(btn => btn.addEventListener("click", newItem));
 
+
+    $(document).ready(function () {
+        $(".enlarge").on("click", function () {
+            $(this).toggleClass("clic-image");
+        });
+    });
+    
+
     
