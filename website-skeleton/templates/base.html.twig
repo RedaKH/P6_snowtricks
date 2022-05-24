@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
@@ -18,30 +20,45 @@
 		{% endblock %}
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark dropdown">
 			<div class="container">
-				<a class="navbar-brand" href="#!">Mon blog</a>
+				<a class="navbar-brand" href="#!"></a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link" href="">Tricks</a>
+							<a class="nav-link" href="{{ path('app_home') }}">Tricks</a>
 						</li>
+						{% if not app.user %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_register') }} ">S'inscrire</a>
 						</li>
+					
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
 						</li>
-                        {% if app.user %}
-                          <li class="nav-item">
-							<a class="nav-link" href="{{ path('app_logout') }}">Deconnexion</a>
+						
+						{% endif %}
+						
+						
+						{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('make_trick') }}">Créer votre Tricks</a>
 						</li>
-                       
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="{{ asset('/uploads/' ~ app.user.avatar) }}" width="40" height="40" class="rounded-circle">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{{ path('update_profile') }}">Mettre à jour son profil</a>
+          <a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+						
+						{% endif %}
+						
                         
-                        {% endif %}
                         
                       
 					</ul>
@@ -55,8 +72,7 @@
 			class="bg-light text-center text-lg-start">
 			<!-- Copyright -->
 			<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-				© 2020 Copyright:
-				<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+				© 2022 snowtricks
 			</div>
 			<!-- Copyright -->
 		</footer>

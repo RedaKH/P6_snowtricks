@@ -1,8 +1,0 @@
-{
-    "require-dev": {
-        "symfony/maker-bundle": "^1.38"
-    },
-    "require": {
-        "symfony/asset": "^5.4"
-    }
-}

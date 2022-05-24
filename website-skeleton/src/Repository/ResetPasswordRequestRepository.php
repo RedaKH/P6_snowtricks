@@ -4,14 +4,16 @@ namespace App\Repository;
 
 use App\Entity\ResetPasswordRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
+ * @extends ServiceEntityRepository<ResetPasswordRequest>
+ *
  * @method ResetPasswordRequest|null find($id, $lockMode = null, $lockVersion = null)
  * @method ResetPasswordRequest|null findOneBy(array $criteria, array $orderBy = null)
  * @method ResetPasswordRequest[]    findAll()
@@ -30,7 +32,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(ResetPasswordRequest $entity, bool $flush = true): void
+    public function add(ResetPasswordRequest $entity, bool $flush = false): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -42,7 +44,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(ResetPasswordRequest $entity, bool $flush = true): void
+    public function remove(ResetPasswordRequest $entity, bool $flush = false): void
     {
         $this->_em->remove($entity);
         if ($flush) {

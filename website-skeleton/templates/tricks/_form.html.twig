@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+	{{ form_start(form) }}
+	{{ form_widget(form._token) }}
+
+	{{ form_row(form.title)}}
+	{{ form_row(form.content)}}
+	{{ form_row(form.featimg)}}
+	{{ form_row(form.name)}}
+	 {# Si la route est "update_ on affiche les images #}
+	<h1>Images</h1>
+
+	{% for image in tricks.images %}
+			<div>
+
+				<img src="{{ asset('/uploads/'~image.name) }}" alt="" width="250">
+				
+
+				</br>
+
+				<a href="{{ path('tricks_delete_image', {id: image.id})}}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+			</div>
+		{% endfor %}
+<h1>Liste des urls </h1>
+
+{% for video in tricks.videos %}
+
+						<iframe src="{{ video.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<a href="{{ path('remove_video', {id: video.id})}}" data-delete data-token="{{ csrf_token('delete' ~ video.id )}}">Supprimer</a>
+
+<br/>
+    
+{% endfor %}
+
+
+
+
+
+
+	<div class="form-group">
+    <button type="button" class="btn btn-primary btn-new" data-collection="#videos"> Ajouter une video </button>
+	</div>
+	<br/>
+	<div
+        id="videos"
+        class="row"
+        data-prototype="{{ include("tricks/video.html.twig", {form: form.videos.vars.prototype})|e("html_attr") }}"
+        data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
+
+		{% for video in form.videos %}
+
+       {{ include('tricks/video.html.twig',{form : video}) }}
+        
+        
+        {% endfor %}
+
+	</div>
+	{{ form_row(form.Category)}}
+
+
+	<button class="btn btn-primary">{{ button_label|default('Update') }}</button>
+	{{ form_end(form,{render_rest:false}) }}
+	</div>
+
+	{% block javascripts %}
+		<script src="{{ asset('js/script.js') }}"></script>
+		<script></script>
+	{% endblock %}
+{% endblock %}
