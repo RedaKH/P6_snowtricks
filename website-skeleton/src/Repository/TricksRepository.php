@@ -16,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TricksRepository extends ServiceEntityRepository
 {
+    public const NB_PER_PAGE = 4;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tricks::class);
@@ -44,16 +46,33 @@ class TricksRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-    public function pagination($limit,$page)
+
+    public function getTricksByCreationDate(int $page = 1 , int $nbResults = self::NB_PER_PAGE)
     {
-        $offset = ($page * $limit) - $limit;
-
-        $query = $this->createQueryBuilder('t')
+        $offset = ($page -1) * $nbResults;
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.created_at', 'DESC')
+            ->getQuery()
+            ->setMaxResults($nbResults)
             ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery();
+            ->getResult()
+        ;
+    }
 
-        return $query->execute();
+    public function getTotalNumberOfTricks() : int
+    {
+        return $this->createQueryBuilder('t')
+            ->select('count(t.id)')
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    public function getNbOfPages() : int
+    {
+        $totalCount = $this->getTotalNumberOfTricks();
+        if ($totalCount <= self::NB_PER_PAGE) {
+            return 1;
+        }
+        return $totalCount % self::NB_PER_PAGE === 0 ? $totalCount / self::NB_PER_PAGE : ceil($totalCount / self::NB_PER_PAGE);
     }
 
     // /**

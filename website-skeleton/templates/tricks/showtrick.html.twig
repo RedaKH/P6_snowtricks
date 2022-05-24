@@ -140,41 +140,39 @@
 		</div>
 
 
+		{% if nbPages > 1 %}
 
-			
-    <div class="container">
-		<ul class="pagination">
-			<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
-				<a class="page-link" href="?page=1">
-					<i class="fas fa-step-backward"></i>
-				</a>
-			</li>
-			<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
-				<a class="page-link" href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
-					<i class="fas fa-angle-left"></i>
-				</a>
-			</li>
-			{% set pages = (total / limit)|round(0, 'ceil') %}
-			{% for item in 1..pages %}
-			<li class="page-item {{ (page == item) ? 'active' : '' }}">
-				<a class="page-link" href="?page={{ item }}">{{ item }}</a>
-			</li>
-			{% endfor %}
-			<li class="page-item {{ (page == pages) ? 'disabled' : '' }}">
-				<a class="page-link" href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
-					<i class="fas fa-angle-right"></i>
-				</a>
-			</li>
-			<li class="page-item {{ (page == pages) ? 'disabled' : '' }}">
-				<a class="page-link" href="?page={{ pages }}">
-					<i class="fas fa-step-forward"></i>
-				</a>
-			</li>
+		{# Number of page around current page+1 #}
+		{% set nearbyPagesLimit = 2 %}
 	
-		</ul>
-
-
-	</div>
+		<div class="container">
+			<ul class="pagination">
+				{% if currentPage != 1 %}
+					<li>
+						<a class="page-link" href="{{ path(url, { 'page': 1, 'id': tricks.id, 'slug': slug  }) }}">Première</a>
+					</li>
+				{% endif %}
+				{% for i in 1..nbPages %}
+					{% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+						<li class="disabled page-link"><a href="#">...</a></li>
+					{% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+						<li class="disabled page-link"><a href="#">...</a></li>
+					{% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+					{% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+					{% else %}
+						<li {% if currentPage == loop.index  %} class="active"{% endif %}>
+							<a class="page-link" href="{{ path(url, { 'page': loop.index, 'id': tricks.id, 'slug': slug }) }}">{{ loop.index }}</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+				{% if currentPage != nbPages %}
+					<li>
+						<a class="page-link" href="{{ path(url, { 'page': nbPages,'id': tricks.id, 'slug': slug  }) }}">Dernière</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	{% endif %}
 	
 
 </div>

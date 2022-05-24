@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comments;
+use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentsRepository extends ServiceEntityRepository
 {
+    public const NB_PER_PAGE = 5;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comments::class);
@@ -44,27 +47,36 @@ class CommentsRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-    
-    public function getPaginatedComments($page, $limit,$tricks)
+    public function getCommentsForArticleByCreationDate(int $tricksId, int $page = 1, int $nmResults = self::NB_PER_PAGE): ?array
     {
-        $query = $this->createQueryBuilder('c')
-        ->where('c.tricks = :tricks')
-        ->setParameter('tricks', $tricks)
-        ->orderBy('c.created_at')
-        ->setFirstResult(($page * $limit) - $limit)
-        ->setMaxResults($limit);
-
-    return $query->getQuery()->getResult();
+        $offset = ($page -1) * $nmResults;
+        return $this->createQueryBuilder('c')
+            ->where('c.tricks = :tricksId')
+            ->setParameter('tricksId', $tricksId)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->setMaxResults($nmResults)
+            ->setFirstResult($offset)
+            ->getResult()
+            ;
+    }
+    
+    public function getTotalNumberOfCommentsForATrick(Tricks $tricks) : int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.tricks = :tricksId')
+            ->setParameter('tricksId', $tricks->getId())
+            ->getQuery()->getSingleScalarResult();
     }
 
-    public function getTotalComments($tricks){
-        $query = $this->createQueryBuilder('c')
-            ->select('COUNT(c)')
-            ->where('c.tricks = :tricks')
-        ->setParameter('tricks', $tricks)
-            ;
-
-        return $query->getQuery()->getSingleScalarResult();
+    public function getNbOfPages(Tricks $tricks) : int
+    {
+        $totalCount = $this->getTotalNumberOfCommentsForATrick($tricks);
+        if ($totalCount <= self::NB_PER_PAGE) {
+            return 1;
+        }
+        return $totalCount % self::NB_PER_PAGE === 0 ? $totalCount / self::NB_PER_PAGE : ceil($totalCount / self::NB_PER_PAGE);
     }
 
     // /**

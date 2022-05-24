@@ -42,23 +42,22 @@ class TricksController extends AbstractController
      */
     public function index(Request $request, TricksRepository $tricksrepo): Response
     {
-        $page = $request->query->getInt('page', 1);
-        $limit = 10;
-        $alltricks = count($tricksrepo->findAll());
-        $pagination = ceil($alltricks / $limit);
-        $pagination = ($pagination == 0) ? 1 : $pagination;
-        $page = ($page > $pagination || $page == 0) ? 1 : $page;
-        $tricks = $tricksrepo->pagination($limit, $page);
+        $page = $request->get('page') !== null ? (int) $request->get('page') : 1;
 
-
-
-
-
+        $tricks = $tricksrepo->getTricksByCreationDate($page);
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
-            'pagination' => $pagination,
-            'page' => $page
+            'nbPages'   => $tricksrepo->getNbOfPages(),
+            'currentPage' => $page,
+            'url' => 'app_home',
+            
+
         ]);
+
+
+
+
+
     }
 
 
@@ -267,19 +266,21 @@ class TricksController extends AbstractController
 
 
     /**
-     * @Route("/tricks/{slug}-{id<[0-9]+>}", name="show_trick",methods={"GET","POST"},
+     *@Route("/tricks/{slug}-{id<[0-9]+>}", name="show_trick",methods={"GET","POST"},
      * requirements={"slug": "[a-z0-9\-]*"})
+     * 
+     * 
      */
-    public function showTrick(TricksRepository $tricksrepo, $id, CommentsRepository $repo, Request $request, string $slug): Response
+    public function showTrick(TricksRepository $tricksrepo,Tricks $tricks = null, $id, CommentsRepository $repo, Request $request,string $slug): Response
     {
-        $tricks = $tricksrepo->find($id);
+        $tricksrepo->find($id);
         $category = new Category();
-        if ($tricks->getSlug() !== $slug) {
-            return $this->redirectToRoute('show_trick', [
-                'id' => $tricks->getId(),
-                'slug' => $tricks->getSlug(),
-            ], 301);
+
+        if($tricks === null){
+
+            return $this->redirectToRoute('app_home');
         }
+   
 
         $comments = new Comments;
         $commentForm = $this->createForm(CommentType::class, $comments);
@@ -296,23 +297,19 @@ class TricksController extends AbstractController
         }
 
 
-
-        $limit = 5;
-        $page = $request->query->getInt('page', 1);
-
-        $comments = $repo->getPaginatedComments($page, $limit, $tricks);
-
-        $total = $repo->getTotalComments($tricks);
+        $page = $request->get('page') !== null ? (int)$request->get('page') : 1;
 
 
         return $this->render('tricks/showtrick.html.twig', [
             'tricks' => $tricks,
             'category' => $category,
-            'page' => $page,
-            'total' => $total,
-            'limit' => $limit,
-            'comments' => $comments,
-            'commentForm' => $commentForm->createView()
+            'nbPages' => $repo->getNbOfPages($tricks),
+            'currentPage' => $page,
+            'slug'=>$tricks->getSlug(),
+            'comments' => $repo->getCommentsForArticleByCreationDate($tricks->getId(), $page),
+            'commentForm' => $commentForm->createView(),
+            'url' => 'show_trick'
+
         ]);
     }
 }
